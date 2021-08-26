@@ -1,13 +1,22 @@
 package kdu.library.management.system;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author nadinCodeHat
  */
 public class AdminFrm extends javax.swing.JFrame {
 
-    public AdminFrm() {
+    public AdminFrm() throws SQLException {
         initComponents();
+        getLibrarianInfo();
     }
 
     @SuppressWarnings("unchecked")
@@ -77,6 +86,11 @@ public class AdminFrm extends javax.swing.JFrame {
         refreshBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         refreshBtn.setPreferredSize(new java.awt.Dimension(30, 30));
         refreshBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshBtnActionPerformed(evt);
+            }
+        });
         jToolBar1.add(refreshBtn);
 
         jSeparator5.setSeparatorSize(new java.awt.Dimension(10, 0));
@@ -93,6 +107,11 @@ public class AdminFrm extends javax.swing.JFrame {
         viewBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         viewBtn.setPreferredSize(new java.awt.Dimension(30, 30));
         viewBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        viewBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewBtnActionPerformed(evt);
+            }
+        });
         jToolBar1.add(viewBtn);
 
         jSeparator3.setName(""); // NOI18N
@@ -138,20 +157,20 @@ public class AdminFrm extends javax.swing.JFrame {
 
         librarianTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Librarian Name", "Email Address", "Contact"
+                "ID", "Librarian Name", "Email Address", "Contact"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -206,6 +225,30 @@ public class AdminFrm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void getLibrarianInfo() throws SQLException{
+        DefaultTableModel model = new DefaultTableModel(new String[]{"ID", "Librarian Name", "Email Address", "Contact"}, 0);
+        String getMoviesQuery="SELECT `id`, `name`, `email`, `contact` FROM `users` WHERE `role_id` = 2";
+        try{
+            ResultSet rs;
+            try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(getMoviesQuery)) {
+                rs = pst.executeQuery();
+                while(rs.next())
+                {
+                    int id = rs.getInt("id");
+                    String name = rs.getString("name");
+                    String email = rs.getString("email");
+                    int contact = rs.getInt("contact");
+                    model.addRow(new Object[]{id, name, email, contact});
+                }   
+            }
+            rs.close();
+            DBConnectClass.getConnection().close();
+        }catch(SQLException ex){
+            Logger.getLogger(AdminFrm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        librarianTable.setModel(model);
+    }
+    
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_aboutMenuItemActionPerformed
@@ -224,6 +267,27 @@ public class AdminFrm extends javax.swing.JFrame {
         lgnFrm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_logoutMenuItemActionPerformed
+
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+        try {
+            getLibrarianInfo();
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminFrm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_refreshBtnActionPerformed
+
+    private void viewBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewBtnActionPerformed
+        if (librarianTable.getSelectionModel().isSelectionEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please select a record to view info", "Row not selected", 2);
+        } else {
+            int column = 0;
+            int row = librarianTable.getSelectedRow();
+            int idvalue = (int) librarianTable.getModel().getValueAt(row, column);
+            ViewLibrarianInfo invoice = new ViewLibrarianInfo(idvalue);
+            invoice.pack();
+            invoice.setVisible(true);
+        }
+    }//GEN-LAST:event_viewBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,7 +314,11 @@ public class AdminFrm extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new AdminFrm().setVisible(true);
+            try {
+                new AdminFrm().setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminFrm.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
 
