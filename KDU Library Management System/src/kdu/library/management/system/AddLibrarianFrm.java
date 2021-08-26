@@ -1,12 +1,20 @@
 package kdu.library.management.system;
 
 import java.awt.event.KeyEvent;
+import java.util.Random;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Random;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.JOptionPane;
 
 /**
@@ -108,12 +116,48 @@ public class AddLibrarianFrm extends javax.swing.JFrame {
                 pst = DBConnectClass.getConnection().prepareStatement(query);
                 pst.setString(1, nameTextField.getText());
                 pst.setString(2, emailTextField.getText());
-                pst.setString(3, getRandomString());
+                String password = getRandomString();
+                pst.setString(3, password);
                 pst.setInt(4, Integer.parseInt(contactTextField.getText()));
                 pst.setInt(5, 2);
                 pst.execute();
                 pst.close();
                 DBConnectClass.getConnection().close();
+                                
+                String FromEmail = "ENTER YOUR EMAIL";
+                    String FromEmailPassword = "ENTER YOUR PASSWORD";
+                    Properties props = new Properties();
+                    props.put("mail.smtp.user", "username");
+                    props.put("mail.debug", "true");
+                    props.put("mail.smtp.auth", "true");
+                    props.put("mail.smtp.starttls.enable", "true");
+                    props.put("mail.smtp.host", "smtp.gmail.com");
+                    props.put("mail.smtp.port", "587");
+                    props.put("mail.smtp.EnableSSL.enable", "true");
+                    props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+                    props.setProperty("mail.smtp.socketFactory.fallback", "false");
+                    props.setProperty("mail.smtp.port", "465");
+                    props.setProperty("mail.smtp.socketFactory.port", "465");
+                    Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+                        @Override
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(FromEmail, FromEmailPassword);
+                        }
+                    });
+                    try {
+                        MimeMessage message = new MimeMessage(session);
+                        message.setFrom(new InternetAddress(FromEmail));
+                        message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailTextField.getText()));
+                        message.setSubject("Librarian Account created for KDU Library Management System");
+                        message.setText("New librarian account has been created for KDU library management system /n" 
+                                        + "You can use the following login info to access the system /n"
+                                        + "Email address: "+emailTextField.getText()+"/n"
+                                        + "Password: "+password);
+                        Transport.send(message);
+                    } catch (MessagingException e) {
+                        JOptionPane.showMessageDialog(null, "Something happened!");
+                        throw new RuntimeException(e);
+                    }  
             } catch (SQLException ex) {
                 Logger.getLogger(AddLibrarianFrm.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
