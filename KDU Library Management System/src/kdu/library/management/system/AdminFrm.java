@@ -1,5 +1,6 @@
 package kdu.library.management.system;
 
+import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,6 +55,7 @@ public class AdminFrm extends javax.swing.JFrame {
 
         jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
         jToolBar1.setBorder(null);
+        jToolBar1.setFloatable(false);
         jToolBar1.setMaximumSize(new java.awt.Dimension(570, 30));
         jToolBar1.setMinimumSize(new java.awt.Dimension(570, 30));
         jToolBar1.setPreferredSize(new java.awt.Dimension(570, 30));
@@ -66,10 +68,26 @@ public class AdminFrm extends javax.swing.JFrame {
         jSeparator2.setSeparatorSize(new java.awt.Dimension(10, 0));
         jToolBar1.add(jSeparator2);
 
+        searchTextField.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        searchTextField.setForeground(new java.awt.Color(128, 128, 128));
+        searchTextField.setText("Search");
         searchTextField.setToolTipText("Search Librarian");
         searchTextField.setMaximumSize(new java.awt.Dimension(200, 20));
         searchTextField.setMinimumSize(new java.awt.Dimension(200, 20));
         searchTextField.setPreferredSize(new java.awt.Dimension(200, 20));
+        searchTextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                searchTextFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                searchTextFieldFocusLost(evt);
+            }
+        });
+        searchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                searchTextFieldKeyPressed(evt);
+            }
+        });
         jToolBar1.add(searchTextField);
 
         jSeparator1.setName(""); // NOI18N
@@ -317,6 +335,50 @@ public class AdminFrm extends javax.swing.JFrame {
             }   
         }
     }//GEN-LAST:event_deleteBtnActionPerformed
+
+    private void searchTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusGained
+        if (searchTextField.getText().equals("Search")) {
+            searchTextField.setText("");
+            searchTextField.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_searchTextFieldFocusGained
+
+    private void searchTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusLost
+        if (searchTextField.getText().isEmpty()) {
+            searchTextField.setForeground(Color.GRAY);
+            searchTextField.setText("Search");
+        }
+    }//GEN-LAST:event_searchTextFieldFocusLost
+
+    private void searchTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyPressed
+        DefaultTableModel searchTableModel = new DefaultTableModel(new String[]{"ID", "Librarian Name", "Email Address", "Contact"}, 0);
+        searchTableModel.setRowCount(0);
+        String searchValue = searchTextField.getText();
+        String query = "";
+        if(searchValue.equals("")){
+            query = "SELECT `id`, `name`, `email`, `contact` FROM `users` WHERE `role_id` = 2";
+        }else{
+            query = "SELECT `id`, `name`, `email`, `contact` FROM `users` WHERE `role_id` = 2 AND `name` LIKE '%" + searchValue + "%' OR `contact` LIKE '%" + searchValue + "%'";
+        }
+        try {
+            ResultSet rs;
+            try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(query)) {
+                rs = pst.executeQuery();
+                while(rs.next()){
+                    int id = rs.getInt("id"); 
+                    String name = rs.getString("name");
+                    String email = rs.getString("email");
+                    int contact = rs.getInt("contact");
+                    searchTableModel.addRow(new Object[]{id, name, email, contact});
+                }
+            }
+            rs.close();
+            DBConnectClass.getConnection().close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminFrm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        librarianTable.setModel(searchTableModel);
+    }//GEN-LAST:event_searchTextFieldKeyPressed
 
     /**
      * @param args the command line arguments
