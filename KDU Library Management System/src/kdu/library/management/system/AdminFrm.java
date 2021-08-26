@@ -129,6 +129,11 @@ public class AdminFrm extends javax.swing.JFrame {
         deleteBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         deleteBtn.setPreferredSize(new java.awt.Dimension(30, 30));
         deleteBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
         jToolBar1.add(deleteBtn);
 
         jSeparator4.setName(""); // NOI18N
@@ -288,6 +293,30 @@ public class AdminFrm extends javax.swing.JFrame {
             invoice.setVisible(true);
         }
     }//GEN-LAST:event_viewBtnActionPerformed
+
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        if (librarianTable.getSelectionModel().isSelectionEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please select a record to delete", "Row not selected", 2);
+        } else {
+            int column = 0;
+            int row = librarianTable.getSelectedRow();
+            int idvalue = (int) librarianTable.getModel().getValueAt(row, column);
+            
+            int result = JOptionPane.showConfirmDialog(null,"Do you want to delete this account from the database?", "Confirm Delete", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if(result == JOptionPane.YES_OPTION){
+               String getMoviesQuery="DELETE FROM `users` WHERE `id` = '"+idvalue+"'";
+                try{
+                    try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(getMoviesQuery)) {
+                        pst.executeUpdate();  
+                    }
+                    DBConnectClass.getConnection().close();
+                    JOptionPane.showMessageDialog(null, "Record Deleted!");
+                }catch(SQLException ex){
+                    Logger.getLogger(AdminFrm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }   
+        }
+    }//GEN-LAST:event_deleteBtnActionPerformed
 
     /**
      * @param args the command line arguments
