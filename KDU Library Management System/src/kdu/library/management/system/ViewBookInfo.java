@@ -10,28 +10,31 @@ import java.util.logging.Logger;
  *
  * @author nadinCodeHat
  */
-public class ViewLibrarianInfo extends javax.swing.JFrame {
+public class ViewBookInfo extends javax.swing.JFrame {
 
-    public ViewLibrarianInfo(){}
+    public ViewBookInfo(){}
     
-    private int userid = 0;
-    public ViewLibrarianInfo(int id) {
+    private int bookid = 0;
+    public ViewBookInfo(int id) {
         initComponents();
-        this.userid = id;
-        getLibrarian();
+        this.bookid = id;
+        getBook();
     }
 
-    private void getLibrarian(){
-        String getMoviesQuery="SELECT `name`, `email`, `contact` FROM `users` WHERE `id` = '"+userid+"'";
+    private void getBook(){
+        String getbookQuery="SELECT books.book_title, books.author, books.isbn, books.availability, books.borrowed_date, books.return_date, users.name FROM `books` INNER JOIN `users` ON users.id=books.student_id WHERE books.id = '"+bookid+"'";
         try{
             ResultSet rs;
-            try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(getMoviesQuery)) {
+            try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(getbookQuery)) {
                 rs = pst.executeQuery();
                 while(rs.next())
                 {
-                    name.setText(rs.getString("name"));
-                    emailAddress.setText(rs.getString("email"));
-                    contact.setText(String.valueOf(rs.getInt("contact")));
+                    bookTitle.setText(rs.getString("book_title"));
+                    author.setText(rs.getString("author"));
+                    isbn.setText(String.valueOf(rs.getInt("isbn")));
+                    //availability.setText(rs.getBoolean())
+                    //borrowedDate.setText(rs.getString("email"));
+                    //studentName.setText(String.valueOf(rs.getInt("contact")));
                 }   
             }
             rs.close();
@@ -47,13 +50,21 @@ public class ViewLibrarianInfo extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        exitBtn = new javax.swing.JButton();
-        contactLabel = new javax.swing.JLabel();
-        nameLabel = new javax.swing.JLabel();
-        emailLabel = new javax.swing.JLabel();
-        contact = new javax.swing.JLabel();
-        name = new javax.swing.JLabel();
-        emailAddress = new javax.swing.JLabel();
+        okBtn = new javax.swing.JButton();
+        studentNameLabel = new javax.swing.JLabel();
+        bookTitleLabel = new javax.swing.JLabel();
+        authorLabel = new javax.swing.JLabel();
+        studentName = new javax.swing.JLabel();
+        bookTitle = new javax.swing.JLabel();
+        borrowedDate = new javax.swing.JLabel();
+        isbnLabel = new javax.swing.JLabel();
+        availabilityLabel = new javax.swing.JLabel();
+        borrowedDateLabel = new javax.swing.JLabel();
+        returnDateLabel = new javax.swing.JLabel();
+        isbn = new javax.swing.JLabel();
+        author = new javax.swing.JLabel();
+        availability = new javax.swing.JLabel();
+        returnDate = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -62,50 +73,78 @@ public class ViewLibrarianInfo extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Librarian Info", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Book Info", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        exitBtn.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        exitBtn.setText("OK");
-        exitBtn.addActionListener(new java.awt.event.ActionListener() {
+        okBtn.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        okBtn.setText("OK");
+        okBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitBtnActionPerformed(evt);
+                okBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(exitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 130, -1, -1));
+        jPanel2.add(okBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 250, -1, -1));
 
-        contactLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        contactLabel.setText("Contact :");
-        jPanel2.add(contactLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, -1, -1));
+        studentNameLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        studentNameLabel.setText("Student Name :");
+        jPanel2.add(studentNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
 
-        nameLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        nameLabel.setText("Name :");
-        jPanel2.add(nameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
+        bookTitleLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        bookTitleLabel.setText("Book Title :");
+        jPanel2.add(bookTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(56, 40, -1, -1));
 
-        emailLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        emailLabel.setText("Email Address :");
-        jPanel2.add(emailLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
+        authorLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        authorLabel.setText("Author :");
+        jPanel2.add(authorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(72, 70, -1, -1));
 
-        contact.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jPanel2.add(contact, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, -1, -1));
+        studentName.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jPanel2.add(studentName, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, -1, -1));
 
-        name.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jPanel2.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 40, -1, -1));
+        bookTitle.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jPanel2.add(bookTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 40, -1, -1));
 
-        emailAddress.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jPanel2.add(emailAddress, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, -1, -1));
+        borrowedDate.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jPanel2.add(borrowedDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, -1, -1));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 280, 170));
+        isbnLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        isbnLabel.setText("ISBN :");
+        jPanel2.add(isbnLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(83, 100, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 300, 190));
+        availabilityLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        availabilityLabel.setText("Availability :");
+        jPanel2.add(availabilityLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, -1, -1));
+
+        borrowedDateLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        borrowedDateLabel.setText("Borrowed Date :");
+        jPanel2.add(borrowedDateLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, -1, -1));
+
+        returnDateLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        returnDateLabel.setText("Return Date :");
+        jPanel2.add(returnDateLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 190, -1, -1));
+
+        isbn.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jPanel2.add(isbn, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, -1, -1));
+
+        author.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jPanel2.add(author, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, -1, -1));
+
+        availability.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jPanel2.add(availability, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, -1, -1));
+
+        returnDate.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jPanel2.add(returnDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 190, -1, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 280, 290));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 300, 310));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
+    private void okBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okBtnActionPerformed
         this.dispose();
-    }//GEN-LAST:event_exitBtnActionPerformed
+    }//GEN-LAST:event_okBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -124,27 +163,36 @@ public class ViewLibrarianInfo extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewLibrarianInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewBookInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
         
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new ViewLibrarianInfo().setVisible(true);
+            new ViewBookInfo().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel contact;
-    private javax.swing.JLabel contactLabel;
-    private javax.swing.JLabel emailAddress;
-    private javax.swing.JLabel emailLabel;
-    private javax.swing.JButton exitBtn;
+    private javax.swing.JLabel author;
+    private javax.swing.JLabel authorLabel;
+    private javax.swing.JLabel availability;
+    private javax.swing.JLabel availabilityLabel;
+    private javax.swing.JLabel bookTitle;
+    private javax.swing.JLabel bookTitleLabel;
+    private javax.swing.JLabel borrowedDate;
+    private javax.swing.JLabel borrowedDateLabel;
+    private javax.swing.JLabel isbn;
+    private javax.swing.JLabel isbnLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel name;
-    private javax.swing.JLabel nameLabel;
+    private javax.swing.JButton okBtn;
+    private javax.swing.JLabel returnDate;
+    private javax.swing.JLabel returnDateLabel;
+    private javax.swing.JLabel studentName;
+    private javax.swing.JLabel studentNameLabel;
     // End of variables declaration//GEN-END:variables
 }
