@@ -47,7 +47,7 @@ public class ViewLibrarianInfo extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        exitBtn = new javax.swing.JButton();
+        okBtn = new javax.swing.JButton();
         contactLabel = new javax.swing.JLabel();
         nameLabel = new javax.swing.JLabel();
         emailLabel = new javax.swing.JLabel();
@@ -65,22 +65,22 @@ public class ViewLibrarianInfo extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Librarian Info", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        exitBtn.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        exitBtn.setText("OK");
-        exitBtn.addActionListener(new java.awt.event.ActionListener() {
+        okBtn.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        okBtn.setText("OK");
+        okBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitBtnActionPerformed(evt);
+                okBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(exitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 130, -1, -1));
+        jPanel2.add(okBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, -1, -1));
 
         contactLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         contactLabel.setText("Contact :");
-        jPanel2.add(contactLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, -1, -1));
+        jPanel2.add(contactLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 100, -1, -1));
 
         nameLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         nameLabel.setText("Name :");
-        jPanel2.add(nameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
+        jPanel2.add(nameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, -1, -1));
 
         emailLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         emailLabel.setText("Email Address :");
@@ -103,9 +103,9 @@ public class ViewLibrarianInfo extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
+    private void okBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okBtnActionPerformed
         this.dispose();
-    }//GEN-LAST:event_exitBtnActionPerformed
+    }//GEN-LAST:event_okBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -141,10 +141,10 @@ public class ViewLibrarianInfo extends javax.swing.JFrame {
     private javax.swing.JLabel contactLabel;
     private javax.swing.JLabel emailAddress;
     private javax.swing.JLabel emailLabel;
-    private javax.swing.JButton exitBtn;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel name;
     private javax.swing.JLabel nameLabel;
+    private javax.swing.JButton okBtn;
     // End of variables declaration//GEN-END:variables
 }
