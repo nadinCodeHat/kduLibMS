@@ -273,7 +273,8 @@ public class AdminFrm extends javax.swing.JFrame {
     }
     
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-        // TODO add your handling code here:
+        AboutFrm abFrm = new AboutFrm();
+        abFrm.setVisible(true);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
@@ -306,9 +307,9 @@ public class AdminFrm extends javax.swing.JFrame {
             int column = 0;
             int row = librarianTable.getSelectedRow();
             int idvalue = (int) librarianTable.getModel().getValueAt(row, column);
-            ViewLibrarianInfo invoice = new ViewLibrarianInfo(idvalue);
-            invoice.pack();
-            invoice.setVisible(true);
+            ViewLibrarianInfo librarianInfo = new ViewLibrarianInfo(idvalue);
+            librarianInfo.pack();
+            librarianInfo.setVisible(true);
         }
     }//GEN-LAST:event_viewBtnActionPerformed
 
