@@ -89,7 +89,6 @@ public class LibrarianFrm extends javax.swing.JFrame {
         });
         jToolBar1.add(searchTextField);
 
-        jSeparator6.setOrientation(javax.swing.SwingConstants.HORIZONTAL);
         jSeparator6.setMaximumSize(new java.awt.Dimension(5, 0));
         jSeparator6.setMinimumSize(new java.awt.Dimension(5, 0));
         jSeparator6.setPreferredSize(new java.awt.Dimension(5, 0));
@@ -241,6 +240,7 @@ public class LibrarianFrm extends javax.swing.JFrame {
         setJMenuBar(MenuBar);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusGained

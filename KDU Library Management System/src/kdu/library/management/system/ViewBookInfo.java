@@ -22,7 +22,8 @@ public class ViewBookInfo extends javax.swing.JFrame {
     }
 
     private void getBook(){
-        String getbookQuery="SELECT books.book_title, books.author, books.isbn, books.availability, books.borrowed_date, books.return_date, users.name FROM `books` INNER JOIN `users` ON users.id=books.student_id WHERE books.id = '"+bookid+"'";
+        String getbookQuery="SELECT book_title, author, isbn, availability, borrowed_date, return_date FROM `books` WHERE books.id = '"+bookid+"'";
+        String checkAvailability = null;
         try{
             ResultSet rs;
             try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(getbookQuery)) {
@@ -32,15 +33,38 @@ public class ViewBookInfo extends javax.swing.JFrame {
                     bookTitle.setText(rs.getString("book_title"));
                     author.setText(rs.getString("author"));
                     isbn.setText(String.valueOf(rs.getInt("isbn")));
-                    //availability.setText(rs.getBoolean())
-                    //borrowedDate.setText(rs.getString("email"));
-                    //studentName.setText(String.valueOf(rs.getInt("contact")));
+                    checkAvailability = String.valueOf(rs.getObject("availability"));
+                    availability.setText(checkAvailability);
+                    if("0000-00-00".equals(rs.getString("borrowed_date"))){
+                        borrowedDate.setText("NULL");
+                    }else{
+                        borrowedDate.setText(rs.getString("borrowed_date"));
+                    }
+                    if("0000-00-00".equals(rs.getString("return_date"))){
+                        returnDate.setText("NULL");
+                    }else{
+                        returnDate.setText(rs.getString("return_date"));
+                    }
                 }   
             }
+            ResultSet rS = null;
+            if("false".equals(checkAvailability)){
+                String getStudentName = "SELECT users.name FROM `users` INNER JOIN `books` ON users.id = books.student_id WHERE books.id = '"+bookid+"'";                
+                try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(getStudentName)) {
+                    rS = pst.executeQuery();
+                    while(rS.next())
+                    {
+                        studentName.setText(rS.getString("name"));
+                    }   
+                }
+            }else{
+                studentName.setText("NULL");
+            }
             rs.close();
+            rS.close();
             DBConnectClass.getConnection().close();
         }catch(SQLException ex){
-            Logger.getLogger(AdminFrm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ViewBookInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
