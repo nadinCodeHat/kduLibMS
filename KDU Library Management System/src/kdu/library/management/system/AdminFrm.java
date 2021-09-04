@@ -117,7 +117,7 @@ public class AdminFrm extends javax.swing.JFrame {
         viewBtn.setBackground(new java.awt.Color(255, 255, 255));
         viewBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8_view_30px.png"))); // NOI18N
         viewBtn.setToolTipText("View Librarian");
-        viewBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        viewBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 0));
         viewBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         viewBtn.setFocusable(false);
         viewBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -139,7 +139,7 @@ public class AdminFrm extends javax.swing.JFrame {
         deleteBtn.setBackground(new java.awt.Color(255, 255, 255));
         deleteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8_delete_30px.png"))); // NOI18N
         deleteBtn.setToolTipText("Delete Librarian");
-        deleteBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        deleteBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 0));
         deleteBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         deleteBtn.setFocusable(false);
         deleteBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -161,7 +161,7 @@ public class AdminFrm extends javax.swing.JFrame {
         addBtn.setBackground(new java.awt.Color(255, 255, 255));
         addBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8_add_30px.png"))); // NOI18N
         addBtn.setToolTipText("Add Librarian");
-        addBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        addBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 0));
         addBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         addBtn.setFocusable(false);
         addBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

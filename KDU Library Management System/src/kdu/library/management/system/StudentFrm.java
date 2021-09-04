@@ -13,9 +13,9 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author nadinCodeHat
  */
-public class LibrarianFrm extends javax.swing.JFrame {
+public class StudentFrm extends javax.swing.JFrame {
 
-    public LibrarianFrm() throws SQLException {
+    public StudentFrm() throws SQLException {
         initComponents();
         getBooksInfo();
     }
@@ -32,11 +32,8 @@ public class LibrarianFrm extends javax.swing.JFrame {
         jSeparator6 = new javax.swing.JToolBar.Separator();
         availabilityCombo = new javax.swing.JComboBox<>();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        refreshBtn = new javax.swing.JButton();
-        jSeparator5 = new javax.swing.JToolBar.Separator();
         viewBtn = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
-        addBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         booksTable = new javax.swing.JTable();
         MenuBar = new javax.swing.JMenuBar();
@@ -69,7 +66,7 @@ public class LibrarianFrm extends javax.swing.JFrame {
 
         searchTextField.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         searchTextField.setForeground(new java.awt.Color(128, 128, 128));
-        searchTextField.setText("Search");
+        searchTextField.setText("Search by title, author");
         searchTextField.setToolTipText("Search Librarian");
         searchTextField.setMaximumSize(new java.awt.Dimension(200, 20));
         searchTextField.setMinimumSize(new java.awt.Dimension(200, 20));
@@ -94,10 +91,11 @@ public class LibrarianFrm extends javax.swing.JFrame {
         jSeparator6.setPreferredSize(new java.awt.Dimension(5, 0));
         jToolBar1.add(jSeparator6);
 
+        availabilityCombo.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         availabilityCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Availability", "Available", "Borrowed" }));
-        availabilityCombo.setMaximumSize(new java.awt.Dimension(110, 20));
-        availabilityCombo.setMinimumSize(new java.awt.Dimension(110, 20));
-        availabilityCombo.setPreferredSize(new java.awt.Dimension(110, 20));
+        availabilityCombo.setMaximumSize(new java.awt.Dimension(120, 20));
+        availabilityCombo.setMinimumSize(new java.awt.Dimension(120, 20));
+        availabilityCombo.setPreferredSize(new java.awt.Dimension(120, 20));
         availabilityCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 availabilityComboActionPerformed(evt);
@@ -106,35 +104,13 @@ public class LibrarianFrm extends javax.swing.JFrame {
         jToolBar1.add(availabilityCombo);
 
         jSeparator1.setName(""); // NOI18N
-        jSeparator1.setRequestFocusEnabled(false);
-        jSeparator1.setSeparatorSize(new java.awt.Dimension(135, 0));
-        jSeparator1.setVerifyInputWhenFocusTarget(false);
+        jSeparator1.setSeparatorSize(new java.awt.Dimension(205, 0));
         jToolBar1.add(jSeparator1);
-
-        refreshBtn.setBackground(new java.awt.Color(255, 255, 255));
-        refreshBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8_refresh_30px.png"))); // NOI18N
-        refreshBtn.setToolTipText("Refresh");
-        refreshBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        refreshBtn.setFocusable(false);
-        refreshBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        refreshBtn.setMaximumSize(new java.awt.Dimension(30, 30));
-        refreshBtn.setMinimumSize(new java.awt.Dimension(30, 30));
-        refreshBtn.setPreferredSize(new java.awt.Dimension(30, 30));
-        refreshBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshBtnActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(refreshBtn);
-
-        jSeparator5.setSeparatorSize(new java.awt.Dimension(10, 0));
-        jToolBar1.add(jSeparator5);
 
         viewBtn.setBackground(new java.awt.Color(255, 255, 255));
         viewBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8_view_30px.png"))); // NOI18N
-        viewBtn.setToolTipText("View Librarian");
-        viewBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        viewBtn.setToolTipText("View Book");
+        viewBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 0));
         viewBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         viewBtn.setFocusable(false);
         viewBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -152,24 +128,6 @@ public class LibrarianFrm extends javax.swing.JFrame {
         jSeparator3.setName(""); // NOI18N
         jSeparator3.setSeparatorSize(new java.awt.Dimension(10, 0));
         jToolBar1.add(jSeparator3);
-
-        addBtn.setBackground(new java.awt.Color(255, 255, 255));
-        addBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8_add_30px.png"))); // NOI18N
-        addBtn.setToolTipText("Add Librarian");
-        addBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-        addBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        addBtn.setFocusable(false);
-        addBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        addBtn.setMaximumSize(new java.awt.Dimension(30, 30));
-        addBtn.setMinimumSize(new java.awt.Dimension(30, 30));
-        addBtn.setPreferredSize(new java.awt.Dimension(30, 30));
-        addBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        addBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addBtnActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(addBtn);
 
         jPanel1.add(jToolBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 590, 30));
 
@@ -244,7 +202,7 @@ public class LibrarianFrm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusGained
-        if (searchTextField.getText().equals("Search")) {
+        if (searchTextField.getText().equals("Search by title, author")) {
             searchTextField.setText("");
             searchTextField.setForeground(Color.BLACK);
         }
@@ -253,7 +211,7 @@ public class LibrarianFrm extends javax.swing.JFrame {
     private void searchTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusLost
         if (searchTextField.getText().isEmpty()) {
             searchTextField.setForeground(Color.GRAY);
-            searchTextField.setText("Search");
+            searchTextField.setText("Search by title, author");
         }
     }//GEN-LAST:event_searchTextFieldFocusLost
 
@@ -283,7 +241,7 @@ public class LibrarianFrm extends javax.swing.JFrame {
             rs.close();
             DBConnectClass.getConnection().close();
         } catch (SQLException ex) {
-            Logger.getLogger(LibrarianFrm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StudentFrm.class.getName()).log(Level.SEVERE, null, ex);
         }
         booksTable.setModel(searchTableModel);
     }//GEN-LAST:event_searchTextFieldKeyPressed
@@ -313,14 +271,6 @@ public class LibrarianFrm extends javax.swing.JFrame {
         booksTable.setModel(model);
     }
     
-    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
-        try {
-            getBooksInfo();
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminFrm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_refreshBtnActionPerformed
-
     private void viewBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewBtnActionPerformed
         if (booksTable.getSelectionModel().isSelectionEmpty()) {
             JOptionPane.showMessageDialog(null, "Please select a record to view info", "Row not selected", 2);
@@ -333,11 +283,6 @@ public class LibrarianFrm extends javax.swing.JFrame {
             bookInfo.setVisible(true);
         }
     }//GEN-LAST:event_viewBtnActionPerformed
-
-    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        AddBookFrm aBFrm = new AddBookFrm();
-        aBFrm.setVisible(true);
-    }//GEN-LAST:event_addBtnActionPerformed
 
     private void logoutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutMenuItemActionPerformed
         LoginFrm lgnFrm = new LoginFrm();
@@ -375,8 +320,9 @@ public class LibrarianFrm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LibrarianFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StudentFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
         
         //</editor-fold>
@@ -384,9 +330,9 @@ public class LibrarianFrm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             try {
-                new LibrarianFrm().setVisible(true);
+                new StudentFrm().setVisible(true);
             } catch (SQLException ex) {
-                Logger.getLogger(LibrarianFrm.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(StudentFrm.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }
@@ -394,7 +340,6 @@ public class LibrarianFrm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar MenuBar;
     private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JButton addBtn;
     private javax.swing.JComboBox<String> availabilityCombo;
     private javax.swing.JTable booksTable;
     private javax.swing.JMenuItem exitMenuItem;
@@ -405,11 +350,9 @@ public class LibrarianFrm extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
-    private javax.swing.JToolBar.Separator jSeparator5;
     private javax.swing.JToolBar.Separator jSeparator6;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JMenuItem logoutMenuItem;
-    private javax.swing.JButton refreshBtn;
     private javax.swing.JLabel searchIcon;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JButton viewBtn;
