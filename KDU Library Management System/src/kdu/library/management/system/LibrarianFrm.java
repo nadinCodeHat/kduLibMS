@@ -34,6 +34,8 @@ public class LibrarianFrm extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JToolBar.Separator();
         refreshBtn = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JToolBar.Separator();
+        borrowBtn = new javax.swing.JButton();
+        jSeparator4 = new javax.swing.JToolBar.Separator();
         viewBtn = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         addBtn = new javax.swing.JButton();
@@ -94,10 +96,11 @@ public class LibrarianFrm extends javax.swing.JFrame {
         jSeparator6.setPreferredSize(new java.awt.Dimension(5, 0));
         jToolBar1.add(jSeparator6);
 
+        availabilityCombo.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         availabilityCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Availability", "Available", "Borrowed" }));
-        availabilityCombo.setMaximumSize(new java.awt.Dimension(110, 20));
-        availabilityCombo.setMinimumSize(new java.awt.Dimension(110, 20));
-        availabilityCombo.setPreferredSize(new java.awt.Dimension(110, 20));
+        availabilityCombo.setMaximumSize(new java.awt.Dimension(120, 20));
+        availabilityCombo.setMinimumSize(new java.awt.Dimension(120, 20));
+        availabilityCombo.setPreferredSize(new java.awt.Dimension(120, 20));
         availabilityCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 availabilityComboActionPerformed(evt);
@@ -106,9 +109,7 @@ public class LibrarianFrm extends javax.swing.JFrame {
         jToolBar1.add(availabilityCombo);
 
         jSeparator1.setName(""); // NOI18N
-        jSeparator1.setRequestFocusEnabled(false);
-        jSeparator1.setSeparatorSize(new java.awt.Dimension(135, 0));
-        jSeparator1.setVerifyInputWhenFocusTarget(false);
+        jSeparator1.setSeparatorSize(new java.awt.Dimension(85, 0));
         jToolBar1.add(jSeparator1);
 
         refreshBtn.setBackground(new java.awt.Color(255, 255, 255));
@@ -131,10 +132,31 @@ public class LibrarianFrm extends javax.swing.JFrame {
         jSeparator5.setSeparatorSize(new java.awt.Dimension(10, 0));
         jToolBar1.add(jSeparator5);
 
+        borrowBtn.setBackground(new java.awt.Color(255, 255, 255));
+        borrowBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8_borrow_book_30px.png"))); // NOI18N
+        borrowBtn.setToolTipText("Borrow Book");
+        borrowBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        borrowBtn.setFocusable(false);
+        borrowBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        borrowBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        borrowBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        borrowBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        borrowBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        borrowBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                borrowBtnActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(borrowBtn);
+
+        jSeparator4.setName(""); // NOI18N
+        jSeparator4.setSeparatorSize(new java.awt.Dimension(10, 0));
+        jToolBar1.add(jSeparator4);
+
         viewBtn.setBackground(new java.awt.Color(255, 255, 255));
         viewBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8_view_30px.png"))); // NOI18N
-        viewBtn.setToolTipText("View Librarian");
-        viewBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        viewBtn.setToolTipText("View Book");
+        viewBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 0));
         viewBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         viewBtn.setFocusable(false);
         viewBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -155,8 +177,8 @@ public class LibrarianFrm extends javax.swing.JFrame {
 
         addBtn.setBackground(new java.awt.Color(255, 255, 255));
         addBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons8_add_30px.png"))); // NOI18N
-        addBtn.setToolTipText("Add Librarian");
-        addBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        addBtn.setToolTipText("Add Book");
+        addBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 0));
         addBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         addBtn.setFocusable(false);
         addBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -358,6 +380,11 @@ public class LibrarianFrm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_availabilityComboActionPerformed
 
+    private void borrowBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrowBtnActionPerformed
+        IssueBooksFrm iBFrm = new IssueBooksFrm();
+        iBFrm.setVisible(true);
+    }//GEN-LAST:event_borrowBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -397,6 +424,7 @@ public class LibrarianFrm extends javax.swing.JFrame {
     private javax.swing.JButton addBtn;
     private javax.swing.JComboBox<String> availabilityCombo;
     private javax.swing.JTable booksTable;
+    private javax.swing.JButton borrowBtn;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
@@ -405,6 +433,7 @@ public class LibrarianFrm extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
+    private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JToolBar.Separator jSeparator5;
     private javax.swing.JToolBar.Separator jSeparator6;
     private javax.swing.JToolBar jToolBar1;
