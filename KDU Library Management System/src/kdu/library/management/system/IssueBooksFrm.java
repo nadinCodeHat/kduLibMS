@@ -1,8 +1,8 @@
 package kdu.library.management.system;
 
-import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -11,10 +11,14 @@ import javax.swing.JOptionPane;
  *
  * @author nadinCodeHat
  */
-public class AddBookFrm extends javax.swing.JFrame {
+public class IssueBooksFrm extends javax.swing.JFrame {
 
-    public AddBookFrm() {
+    public IssueBooksFrm() {}
+    
+     private int bookid = 0;
+    public IssueBooksFrm(int id) {
         initComponents();
+        this.bookid = id;
     }
 
     @SuppressWarnings("unchecked")
@@ -24,13 +28,13 @@ public class AddBookFrm extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         exitBtn = new javax.swing.JButton();
-        addBtn = new javax.swing.JButton();
-        bookTitleTextField = new javax.swing.JTextField();
-        isbnTextField = new javax.swing.JTextField();
-        authorTextField = new javax.swing.JTextField();
-        authorLabel = new javax.swing.JLabel();
+        updateBtn = new javax.swing.JButton();
+        studentNameTextField = new javax.swing.JTextField();
+        returnDateLabel = new javax.swing.JLabel();
         bookTitleLabel = new javax.swing.JLabel();
-        isbnLabel = new javax.swing.JLabel();
+        availabilityCombo = new javax.swing.JComboBox<>();
+        returnDateChooser = new com.toedter.calendar.JDateChooser();
+        studentNameLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -39,7 +43,7 @@ public class AddBookFrm extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Add Book", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Issue Book", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         exitBtn.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
@@ -49,44 +53,46 @@ public class AddBookFrm extends javax.swing.JFrame {
                 exitBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(exitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, -1, -1));
+        jPanel2.add(exitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 210, -1, -1));
 
-        addBtn.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        addBtn.setText("Add");
-        addBtn.addActionListener(new java.awt.event.ActionListener() {
+        updateBtn.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        updateBtn.setText("Update");
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addBtnActionPerformed(evt);
+                updateBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(addBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 200, -1, -1));
+        jPanel2.add(updateBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 210, -1, -1));
 
-        bookTitleTextField.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jPanel2.add(bookTitleTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 200, -1));
+        studentNameTextField.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jPanel2.add(studentNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 200, -1));
 
-        isbnTextField.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        isbnTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                isbnTextFieldKeyPressed(evt);
-            }
-        });
-        jPanel2.add(isbnTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 200, -1));
-
-        authorTextField.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jPanel2.add(authorTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 200, -1));
-
-        authorLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        authorLabel.setText("Author");
-        jPanel2.add(authorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, -1, -1));
+        returnDateLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        returnDateLabel.setText("Choose return date");
+        jPanel2.add(returnDateLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
 
         bookTitleLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         bookTitleLabel.setText("Book Title");
         jPanel2.add(bookTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
-        isbnLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        isbnLabel.setText("ISBN");
-        jPanel2.add(isbnLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, -1));
+        availabilityCombo.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        availabilityCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Availability", "Available", "Borrowed" }));
+        availabilityCombo.setMaximumSize(new java.awt.Dimension(110, 20));
+        availabilityCombo.setMinimumSize(new java.awt.Dimension(110, 20));
+        availabilityCombo.setPreferredSize(new java.awt.Dimension(110, 20));
+        availabilityCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                availabilityComboActionPerformed(evt);
+            }
+        });
+        jPanel2.add(availabilityCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 120, -1));
+        jPanel2.add(returnDateChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 200, -1));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 260, 260));
+        studentNameLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        studentNameLabel.setText("Student Name");
+        jPanel2.add(studentNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, -1, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 260, 270));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 290));
 
@@ -98,58 +104,77 @@ public class AddBookFrm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_exitBtnActionPerformed
 
-    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
+    private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
          if (checkEmptyFields()) {
             PreparedStatement pst = null;
-            String query =  "INSERT INTO `books`(`book_title`, `author`, `isbn`, `availability`, `borrowed_date`, `return_date`, `student_id`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String query = "UPDATE `books` SET `availability`=?,`borrowed_date`=?,`return_date`=?,`student_id`=? WHERE `id` = '"+bookid+"'";
+            
+                
             try {
                 pst = DBConnectClass.getConnection().prepareStatement(query);
-                pst.setString(1, bookTitleTextField.getText());
-                pst.setString(2, authorTextField.getText());
-                pst.setInt(3, Integer.parseInt(isbnTextField.getText()));
-                pst.setBoolean(4, true);
-                pst.setDate(5, null);
-                pst.setDate(6, null);
-                pst.setInt(7, 0);
+                if(availabilityCombo.getSelectedItem() == "Available"){
+                    pst.setBoolean(1, true);
+                    pst.setString(2, "000-00-00");
+                    pst.setString(3, "000-00-00");
+                    pst.setInt(4, 0);
+                }
+                if(availabilityCombo.getSelectedItem() == "Borrowed"){
+                    pst.setBoolean(1, false);
+                    String nowdate = String.format("%1$tY-%1$tm-%1$td", LocalDate.now());
+                    pst.setString(2, nowdate);
+                    String dateStr = String.format("%1$tY-%1$tm-%1$td", returnDateChooser.getDate());
+                    pst.setString(3, dateStr);
+                    pst.setInt(4, 0);
+                }
                 pst.execute();
                 pst.close();
                 DBConnectClass.getConnection().close();
             } catch (SQLException ex) {
-                Logger.getLogger(AddBookFrm.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(IssueBooksFrm.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
-                JOptionPane.showMessageDialog(null, "New book added!");
+                JOptionPane.showMessageDialog(null, "Book updated!");
             }
         }
-    }//GEN-LAST:event_addBtnActionPerformed
-   
-    private void isbnTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_isbnTextFieldKeyPressed
-        if (evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9' && isbnTextField.getText().length() < 10 || evt.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-            isbnTextField.setEditable(true);
-        } else {
-            isbnTextField.setEditable(false);
-        }
-    }//GEN-LAST:event_isbnTextFieldKeyPressed
+    }//GEN-LAST:event_updateBtnActionPerformed
 
+    private void availabilityComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_availabilityComboActionPerformed
+        if(availabilityCombo.getSelectedItem() == "Available"){
+            studentNameLabel.setEnabled(false);
+            studentNameTextField.setEnabled(false);
+            returnDateLabel.setEnabled(false);
+            returnDateChooser.setEnabled(false);
+        }else{
+            studentNameLabel.setEnabled(true);
+            studentNameTextField.setEnabled(true);
+            returnDateLabel.setEnabled(true);
+            returnDateChooser.setEnabled(true);
+        }
+    }//GEN-LAST:event_availabilityComboActionPerformed
+   
      private boolean checkEmptyFields() {
-        String bookTitle = bookTitleTextField.getText();
-        String isbn = isbnTextField.getText();
-        String author = authorTextField.getText();
+        String availability = availabilityCombo.getSelectedItem().toString();
 
         //check empty fields
-        if (bookTitle.trim().equals("")) {
-            JOptionPane.showMessageDialog(null, "Book title field is empty.", "Empty Field", 2);
-            return false;
-        }
-        if (isbn.trim().equals("")) {
-            JOptionPane.showMessageDialog(null, "ISBN field is empty.", "Empty genre", 2);
-            return false;
-        }
-        if (author.trim().equals("")) {
-            JOptionPane.showMessageDialog(null, "Author field is empty", "Empty Field", 2);
-            return false;
-        }
-        else {
-            return true;
+        switch (availability.trim()) {
+            case "Select Availability" -> {
+                JOptionPane.showMessageDialog(null, "Please choose the book to be available or borrowed", "Select availability", 2);
+                return false;
+            }
+            case "Borrowed" -> {
+                if(studentNameTextField.getText().trim().equals("")){
+                    JOptionPane.showMessageDialog(null, "Student name field is empty.", "Empty Field", 2);
+                    return false;
+                }
+                if(returnDateChooser.getDate() == null){
+                    JOptionPane.showMessageDialog(null, "Choose return date for the book.", "Empty genre", 2);
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+            default -> {
+                return true;
+            }
         }
     }
     
@@ -170,8 +195,12 @@ public class AddBookFrm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddBookFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IssueBooksFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -181,20 +210,20 @@ public class AddBookFrm extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new AddBookFrm().setVisible(true);
+            new IssueBooksFrm().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addBtn;
-    private javax.swing.JLabel authorLabel;
-    private javax.swing.JTextField authorTextField;
+    private javax.swing.JComboBox<String> availabilityCombo;
     private javax.swing.JLabel bookTitleLabel;
-    private javax.swing.JTextField bookTitleTextField;
     private javax.swing.JButton exitBtn;
-    private javax.swing.JLabel isbnLabel;
-    private javax.swing.JTextField isbnTextField;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private com.toedter.calendar.JDateChooser returnDateChooser;
+    private javax.swing.JLabel returnDateLabel;
+    private javax.swing.JLabel studentNameLabel;
+    private javax.swing.JTextField studentNameTextField;
+    private javax.swing.JButton updateBtn;
     // End of variables declaration//GEN-END:variables
 }
