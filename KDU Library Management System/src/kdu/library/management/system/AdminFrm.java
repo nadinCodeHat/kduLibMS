@@ -1,11 +1,14 @@
 package kdu.library.management.system;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,8 +21,17 @@ public class AdminFrm extends javax.swing.JFrame {
     public AdminFrm() throws SQLException {
         initComponents();
         getLibrarianInfo();
+        loadFrameImage();
     }
 
+    public void loadFrameImage() {
+        try {
+            setIconImage(ImageIO.read(new File("kdu_logo.png")));
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(AdminFrm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -248,30 +260,29 @@ public class AdminFrm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void getLibrarianInfo() throws SQLException{
+    private void getLibrarianInfo() throws SQLException {
         DefaultTableModel model = new DefaultTableModel(new String[]{"ID", "Librarian Name", "Email Address", "Contact"}, 0);
-        String getMoviesQuery="SELECT `id`, `name`, `email`, `contact` FROM `users` WHERE `role_id` = 2";
-        try{
+        String getMoviesQuery = "SELECT `id`, `name`, `email`, `contact` FROM `users` WHERE `role_id` = 2";
+        try {
             ResultSet rs;
             try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(getMoviesQuery)) {
                 rs = pst.executeQuery();
-                while(rs.next())
-                {
+                while (rs.next()) {
                     int id = rs.getInt("id");
                     String name = rs.getString("name");
                     String email = rs.getString("email");
                     int contact = rs.getInt("contact");
                     model.addRow(new Object[]{id, name, email, contact});
-                }   
+                }
             }
             rs.close();
             DBConnectClass.getConnection().close();
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             Logger.getLogger(AdminFrm.class.getName()).log(Level.SEVERE, null, ex);
         }
         librarianTable.setModel(model);
     }
-    
+
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
         AboutFrm abFrm = new AboutFrm();
         abFrm.setVisible(true);
@@ -320,20 +331,20 @@ public class AdminFrm extends javax.swing.JFrame {
             int column = 0;
             int row = librarianTable.getSelectedRow();
             int idvalue = (int) librarianTable.getModel().getValueAt(row, column);
-            
-            int result = JOptionPane.showConfirmDialog(null,"Do you want to delete this account from the database?", "Confirm Delete", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if(result == JOptionPane.YES_OPTION){
-               String getMoviesQuery="DELETE FROM `users` WHERE `id` = '"+idvalue+"'";
-                try{
+
+            int result = JOptionPane.showConfirmDialog(null, "Do you want to delete this account from the database?", "Confirm Delete", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (result == JOptionPane.YES_OPTION) {
+                String getMoviesQuery = "DELETE FROM `users` WHERE `id` = '" + idvalue + "'";
+                try {
                     try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(getMoviesQuery)) {
-                        pst.executeUpdate();  
+                        pst.executeUpdate();
                     }
                     DBConnectClass.getConnection().close();
                     JOptionPane.showMessageDialog(null, "Record Deleted!");
-                }catch(SQLException ex){
+                } catch (SQLException ex) {
                     Logger.getLogger(AdminFrm.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }   
+            }
         }
     }//GEN-LAST:event_deleteBtnActionPerformed
 
@@ -356,17 +367,17 @@ public class AdminFrm extends javax.swing.JFrame {
         searchTableModel.setRowCount(0);
         String searchValue = searchTextField.getText();
         String query = "";
-        if(searchValue.equals("")){
+        if (searchValue.equals("")) {
             query = "SELECT `id`, `name`, `email`, `contact` FROM `users` WHERE `role_id` = 2";
-        }else{
+        } else {
             query = "SELECT `id`, `name`, `email`, `contact` FROM `users` WHERE `role_id` = 2 AND `name` LIKE '%" + searchValue + "%' OR `contact` LIKE '%" + searchValue + "%'";
         }
         try {
             ResultSet rs;
             try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(query)) {
                 rs = pst.executeQuery();
-                while(rs.next()){
-                    int id = rs.getInt("id"); 
+                while (rs.next()) {
+                    int id = rs.getInt("id");
                     String name = rs.getString("name");
                     String email = rs.getString("email");
                     int contact = rs.getInt("contact");
@@ -401,7 +412,7 @@ public class AdminFrm extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(AdminFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */

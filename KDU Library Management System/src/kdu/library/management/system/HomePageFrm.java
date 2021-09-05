@@ -1,7 +1,9 @@
 package kdu.library.management.system;
 
 import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -15,8 +17,17 @@ public class HomePageFrm extends javax.swing.JFrame {
 
     public HomePageFrm() {
         initComponents();
+        loadFrameImage();
     }
 
+    public void loadFrameImage() {
+        try {
+            setIconImage(ImageIO.read(new File("kdu_logo.png")));
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(HomePageFrm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -130,7 +141,13 @@ public class HomePageFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_loginBtnActionPerformed
 
     private void enterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterBtnActionPerformed
-        
+        try {
+            StudentFrm stFrm = new StudentFrm();
+            stFrm.pack();
+            stFrm.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(HomePageFrm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_enterBtnActionPerformed
 
     /**
@@ -154,7 +171,7 @@ public class HomePageFrm extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
         //</editor-fold>
 

@@ -1,11 +1,14 @@
 package kdu.library.management.system;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,8 +21,17 @@ public class LibrarianFrm extends javax.swing.JFrame {
     public LibrarianFrm() throws SQLException {
         initComponents();
         getBooksInfo();
+        loadFrameImage();
     }
 
+    public void loadFrameImage() {
+        try {
+            setIconImage(ImageIO.read(new File("kdu_logo.png")));
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(LibrarianFrm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -30,7 +42,6 @@ public class LibrarianFrm extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JToolBar.Separator();
         searchTextField = new javax.swing.JTextField();
         jSeparator6 = new javax.swing.JToolBar.Separator();
-        availabilityCombo = new javax.swing.JComboBox<>();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         refreshBtn = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JToolBar.Separator();
@@ -96,20 +107,8 @@ public class LibrarianFrm extends javax.swing.JFrame {
         jSeparator6.setPreferredSize(new java.awt.Dimension(5, 0));
         jToolBar1.add(jSeparator6);
 
-        availabilityCombo.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        availabilityCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Availability", "Available", "Borrowed" }));
-        availabilityCombo.setMaximumSize(new java.awt.Dimension(120, 20));
-        availabilityCombo.setMinimumSize(new java.awt.Dimension(120, 20));
-        availabilityCombo.setPreferredSize(new java.awt.Dimension(120, 20));
-        availabilityCombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                availabilityComboActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(availabilityCombo);
-
         jSeparator1.setName(""); // NOI18N
-        jSeparator1.setSeparatorSize(new java.awt.Dimension(85, 0));
+        jSeparator1.setSeparatorSize(new java.awt.Dimension(205, 0));
         jToolBar1.add(jSeparator1);
 
         refreshBtn.setBackground(new java.awt.Color(255, 255, 255));
@@ -284,16 +283,16 @@ public class LibrarianFrm extends javax.swing.JFrame {
         searchTableModel.setRowCount(0);
         String searchValue = searchTextField.getText();
         String query = "";
-        if(searchValue.equals("")){
+        if (searchValue.equals("")) {
             query = "SELECT `id`, `book_title`, `author`, `isbn`, `availability` FROM `books`";
-        }else{
+        } else {
             query = "SELECT `id`, `book_title`, `author`, `isbn`, `availability` FROM `books` WHERE `book_title` LIKE '%" + searchValue + "%' OR `author` LIKE '%" + searchValue + "%' OR `isbn` LIKE '%" + searchValue + "%'";
         }
         try {
             ResultSet rs;
             try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(query)) {
                 rs = pst.executeQuery();
-                while(rs.next()){
+                while (rs.next()) {
                     int id = rs.getInt("id");
                     String bookTitle = rs.getString("book_title");
                     String author = rs.getString("author");
@@ -310,36 +309,35 @@ public class LibrarianFrm extends javax.swing.JFrame {
         booksTable.setModel(searchTableModel);
     }//GEN-LAST:event_searchTextFieldKeyPressed
 
-    private void getBooksInfo() throws SQLException{
+    private void getBooksInfo() throws SQLException {
         DefaultTableModel model = new DefaultTableModel(new String[]{"ID", "Book Title", "Author", "ISBN", "Availability"}, 0);
-        String getMoviesQuery="SELECT `id`, `book_title`, `author`, `isbn`, `availability` FROM `books`";
-        try{
+        String getMoviesQuery = "SELECT `id`, `book_title`, `author`, `isbn`, `availability` FROM `books`";
+        try {
             ResultSet rs;
             try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(getMoviesQuery)) {
                 rs = pst.executeQuery();
-                while(rs.next())
-                {
+                while (rs.next()) {
                     int id = rs.getInt("id");
                     String bookTitle = rs.getString("book_title");
                     String author = rs.getString("author");
                     int isbn = rs.getInt("isbn");
                     boolean availability = rs.getBoolean("availability");
                     model.addRow(new Object[]{id, bookTitle, author, isbn, availability});
-                }   
+                }
             }
             rs.close();
             DBConnectClass.getConnection().close();
-        }catch(SQLException ex){
-            Logger.getLogger(AdminFrm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(LibrarianFrm.class.getName()).log(Level.SEVERE, null, ex);
         }
         booksTable.setModel(model);
     }
-    
+
     private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
         try {
             getBooksInfo();
         } catch (SQLException ex) {
-            Logger.getLogger(AdminFrm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LibrarianFrm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_refreshBtnActionPerformed
 
@@ -376,13 +374,17 @@ public class LibrarianFrm extends javax.swing.JFrame {
         abFrm.setVisible(true);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
-    private void availabilityComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_availabilityComboActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_availabilityComboActionPerformed
-
     private void borrowBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrowBtnActionPerformed
-        IssueBooksFrm iBFrm = new IssueBooksFrm();
-        iBFrm.setVisible(true);
+        if (booksTable.getSelectionModel().isSelectionEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please select a record.", "Row not selected", 2);
+        } else {
+            int column = 0;
+            int row = booksTable.getSelectedRow();
+            int idvalue = (int) booksTable.getModel().getValueAt(row, column);
+            IssueBooksFrm iBFrm = new IssueBooksFrm(idvalue);
+            iBFrm.pack();
+            iBFrm.setVisible(true);
+        }
     }//GEN-LAST:event_borrowBtnActionPerformed
 
     /**
@@ -392,7 +394,7 @@ public class LibrarianFrm extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -405,7 +407,7 @@ public class LibrarianFrm extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(LibrarianFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */
@@ -422,7 +424,6 @@ public class LibrarianFrm extends javax.swing.JFrame {
     private javax.swing.JMenuBar MenuBar;
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JButton addBtn;
-    private javax.swing.JComboBox<String> availabilityCombo;
     private javax.swing.JTable booksTable;
     private javax.swing.JButton borrowBtn;
     private javax.swing.JMenuItem exitMenuItem;

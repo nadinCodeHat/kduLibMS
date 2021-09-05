@@ -1,10 +1,13 @@
 package kdu.library.management.system;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -12,62 +15,70 @@ import java.util.logging.Logger;
  */
 public class ViewBookInfo extends javax.swing.JFrame {
 
-    public ViewBookInfo(){}
-    
+    public ViewBookInfo() {}
+
     private int bookid = 0;
+
     public ViewBookInfo(int id) {
         initComponents();
         this.bookid = id;
         getBook();
+        loadFrameImage();
     }
 
-    private void getBook(){
-        String getbookQuery="SELECT book_title, author, isbn, availability, borrowed_date, return_date FROM `books` WHERE books.id = '"+bookid+"'";
+    public void loadFrameImage() {
+        try {
+            setIconImage(ImageIO.read(new File("kdu_logo.png")));
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(ViewBookInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void getBook() {
+        String getbookQuery = "SELECT book_title, author, isbn, availability, borrowed_date, return_date FROM `books` WHERE books.id = '" + bookid + "'";
         String checkAvailability = null;
-        try{
+        try {
             ResultSet rs;
             try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(getbookQuery)) {
                 rs = pst.executeQuery();
-                while(rs.next())
-                {
+                while (rs.next()) {
                     bookTitle.setText(rs.getString("book_title"));
                     author.setText(rs.getString("author"));
                     isbn.setText(String.valueOf(rs.getInt("isbn")));
                     checkAvailability = String.valueOf(rs.getObject("availability"));
                     availability.setText(checkAvailability);
-                    if("0000-00-00".equals(rs.getString("borrowed_date"))){
+                    if ("0000-00-00".equals(rs.getString("borrowed_date"))) {
                         borrowedDate.setText("NULL");
-                    }else{
+                    } else {
                         borrowedDate.setText(rs.getString("borrowed_date"));
                     }
-                    if("0000-00-00".equals(rs.getString("return_date"))){
+                    if ("0000-00-00".equals(rs.getString("return_date"))) {
                         returnDate.setText("NULL");
-                    }else{
+                    } else {
                         returnDate.setText(rs.getString("return_date"));
                     }
-                }   
+                }
             }
             ResultSet rS = null;
-            if("false".equals(checkAvailability)){
-                String getStudentName = "SELECT users.name FROM `users` INNER JOIN `books` ON users.id = books.student_id WHERE books.id = '"+bookid+"'";                
+            if ("false".equals(checkAvailability)) {
+                String getStudentName = "SELECT users.name FROM `users` INNER JOIN `books` ON users.id = books.student_id WHERE books.id = '" + bookid + "'";
                 try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(getStudentName)) {
                     rS = pst.executeQuery();
-                    while(rS.next())
-                    {
+                    while (rS.next()) {
                         studentName.setText(rS.getString("name"));
-                    }   
+                    }
                 }
-            }else{
+            } else {
                 studentName.setText("NULL");
             }
             rs.close();
             rS.close();
             DBConnectClass.getConnection().close();
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             Logger.getLogger(ViewBookInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -191,7 +202,7 @@ public class ViewBookInfo extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */

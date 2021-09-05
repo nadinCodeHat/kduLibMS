@@ -1,10 +1,13 @@
 package kdu.library.management.system;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -12,35 +15,44 @@ import java.util.logging.Logger;
  */
 public class ViewLibrarianInfo extends javax.swing.JFrame {
 
-    public ViewLibrarianInfo(){}
-    
+    public ViewLibrarianInfo() {}
+
     private int userid = 0;
+
     public ViewLibrarianInfo(int id) {
         initComponents();
         this.userid = id;
         getLibrarian();
+        loadFrameImage();
+    }
+    
+    public void loadFrameImage() {
+        try {
+            setIconImage(ImageIO.read(new File("kdu_logo.png")));
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(ViewLibrarianInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    private void getLibrarian(){
-        String getMoviesQuery="SELECT `name`, `email`, `contact` FROM `users` WHERE `id` = '"+userid+"'";
-        try{
+    private void getLibrarian() {
+        String getMoviesQuery = "SELECT `name`, `email`, `contact` FROM `users` WHERE `id` = '" + userid + "'";
+        try {
             ResultSet rs;
             try (PreparedStatement pst = DBConnectClass.getConnection().prepareStatement(getMoviesQuery)) {
                 rs = pst.executeQuery();
-                while(rs.next())
-                {
+                while (rs.next()) {
                     name.setText(rs.getString("name"));
                     emailAddress.setText(rs.getString("email"));
                     contact.setText(String.valueOf(rs.getInt("contact")));
-                }   
+                }
             }
             rs.close();
             DBConnectClass.getConnection().close();
-        }catch(SQLException ex){
-            Logger.getLogger(AdminFrm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewLibrarianInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -127,7 +139,7 @@ public class ViewLibrarianInfo extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ViewLibrarianInfo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */

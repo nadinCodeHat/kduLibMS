@@ -1,6 +1,8 @@
 package kdu.library.management.system;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +10,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -25,6 +28,15 @@ public class AddLibrarianFrm extends javax.swing.JFrame {
 
     public AddLibrarianFrm() {
         initComponents();
+        loadFrameImage();
+    }
+    
+    public void loadFrameImage() {
+        try {
+            setIconImage(ImageIO.read(new File("kdu_logo.png")));
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(AddLibrarianFrm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -109,9 +121,9 @@ public class AddLibrarianFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_exitBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-         if (checkEmail(emailTextField.getText()) && checkEmptyFields()) {
+        if (checkEmail(emailTextField.getText()) && checkEmptyFields()) {
             PreparedStatement pst = null;
-            String query =  "INSERT INTO `users`(`name`, `email`, `password`, `contact`, `role_id`) VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO `users`(`name`, `email`, `password`, `contact`, `role_id`) VALUES (?, ?, ?, ?, ?)";
             try {
                 pst = DBConnectClass.getConnection().prepareStatement(query);
                 pst.setString(1, nameTextField.getText());
@@ -123,41 +135,41 @@ public class AddLibrarianFrm extends javax.swing.JFrame {
                 pst.execute();
                 pst.close();
                 DBConnectClass.getConnection().close();
-                                
+
                 String FromEmail = "ENTER YOUR EMAIL";
-                    String FromEmailPassword = "ENTER YOUR PASSWORD";
-                    Properties props = new Properties();
-                    props.put("mail.smtp.user", "username");
-                    props.put("mail.debug", "true");
-                    props.put("mail.smtp.auth", "true");
-                    props.put("mail.smtp.starttls.enable", "true");
-                    props.put("mail.smtp.host", "smtp.gmail.com");
-                    props.put("mail.smtp.port", "587");
-                    props.put("mail.smtp.EnableSSL.enable", "true");
-                    props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-                    props.setProperty("mail.smtp.socketFactory.fallback", "false");
-                    props.setProperty("mail.smtp.port", "465");
-                    props.setProperty("mail.smtp.socketFactory.port", "465");
-                    Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
-                        @Override
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(FromEmail, FromEmailPassword);
-                        }
-                    });
-                    try {
-                        MimeMessage message = new MimeMessage(session);
-                        message.setFrom(new InternetAddress(FromEmail));
-                        message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailTextField.getText()));
-                        message.setSubject("Librarian Account created for KDU Library Management System");
-                        message.setText("New librarian account has been created for KDU library management system /n" 
-                                        + "You can use the following login info to access the system /n"
-                                        + "Email address: "+emailTextField.getText()+"/n"
-                                        + "Password: "+password);
-                        Transport.send(message);
-                    } catch (MessagingException e) {
-                        JOptionPane.showMessageDialog(null, "Something happened!");
-                        throw new RuntimeException(e);
-                    }  
+                String FromEmailPassword = "ENTER YOUR PASSWORD";
+                Properties props = new Properties();
+                props.put("mail.smtp.user", "username");
+                props.put("mail.debug", "true");
+                props.put("mail.smtp.auth", "true");
+                props.put("mail.smtp.starttls.enable", "true");
+                props.put("mail.smtp.host", "smtp.gmail.com");
+                props.put("mail.smtp.port", "587");
+                props.put("mail.smtp.EnableSSL.enable", "true");
+                props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+                props.setProperty("mail.smtp.socketFactory.fallback", "false");
+                props.setProperty("mail.smtp.port", "465");
+                props.setProperty("mail.smtp.socketFactory.port", "465");
+                Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(FromEmail, FromEmailPassword);
+                    }
+                });
+                try {
+                    MimeMessage message = new MimeMessage(session);
+                    message.setFrom(new InternetAddress(FromEmail));
+                    message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailTextField.getText()));
+                    message.setSubject("Librarian Account created for KDU Library Management System");
+                    message.setText("New librarian account has been created for KDU library management system /n"
+                            + "You can use the following login info to access the system /n"
+                            + "Email address: " + emailTextField.getText() + "/n"
+                            + "Password: " + password);
+                    Transport.send(message);
+                } catch (MessagingException e) {
+                    JOptionPane.showMessageDialog(null, "Something happened!");
+                    throw new RuntimeException(e);
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(AddLibrarianFrm.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
@@ -187,8 +199,7 @@ public class AddLibrarianFrm extends javax.swing.JFrame {
         }
         return email_notexists;
     }
-    
-    
+
     private void contactTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contactTextFieldKeyPressed
         if (evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9' && contactTextField.getText().length() < 10 || evt.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
             contactTextField.setEditable(true);
@@ -197,7 +208,7 @@ public class AddLibrarianFrm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_contactTextFieldKeyPressed
 
-     private boolean checkEmptyFields() {
+    private boolean checkEmptyFields() {
         String name = nameTextField.getText();
         String email = emailTextField.getText();
         String contact = contactTextField.getText();
@@ -214,16 +225,15 @@ public class AddLibrarianFrm extends javax.swing.JFrame {
         if (contact.trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Contact field is empty", "Empty Field", 2);
             return false;
-        } 
-        if (contact.length() != 10){
+        }
+        if (contact.length() != 10) {
             JOptionPane.showMessageDialog(null, "Contact should have a minimum length of 10", "Invalid length", 2);
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
-    
+
     public static String getRandomString() {
         char[] chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRST".toCharArray();
 
@@ -237,7 +247,7 @@ public class AddLibrarianFrm extends javax.swing.JFrame {
 
         return randomStr;
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -259,7 +269,7 @@ public class AddLibrarianFrm extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */

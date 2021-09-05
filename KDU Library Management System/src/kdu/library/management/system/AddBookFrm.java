@@ -1,10 +1,13 @@
 package kdu.library.management.system;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,8 +18,17 @@ public class AddBookFrm extends javax.swing.JFrame {
 
     public AddBookFrm() {
         initComponents();
+        loadFrameImage();
     }
 
+    public void loadFrameImage() {
+        try {
+            setIconImage(ImageIO.read(new File("kdu_logo.png")));
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(AddBookFrm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -99,9 +111,9 @@ public class AddBookFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_exitBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-         if (checkEmptyFields()) {
+        if (checkEmptyFields()) {
             PreparedStatement pst = null;
-            String query =  "INSERT INTO `books`(`book_title`, `author`, `isbn`, `availability`, `borrowed_date`, `return_date`, `student_id`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO `books`(`book_title`, `author`, `isbn`, `availability`, `borrowed_date`, `return_date`, `student_id`) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try {
                 pst = DBConnectClass.getConnection().prepareStatement(query);
                 pst.setString(1, bookTitleTextField.getText());
@@ -121,7 +133,7 @@ public class AddBookFrm extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_addBtnActionPerformed
-   
+
     private void isbnTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_isbnTextFieldKeyPressed
         if (evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9' && isbnTextField.getText().length() < 10 || evt.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
             isbnTextField.setEditable(true);
@@ -130,7 +142,7 @@ public class AddBookFrm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_isbnTextFieldKeyPressed
 
-     private boolean checkEmptyFields() {
+    private boolean checkEmptyFields() {
         String bookTitle = bookTitleTextField.getText();
         String isbn = isbnTextField.getText();
         String author = authorTextField.getText();
@@ -147,12 +159,11 @@ public class AddBookFrm extends javax.swing.JFrame {
         if (author.trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Author field is empty", "Empty Field", 2);
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -176,7 +187,7 @@ public class AddBookFrm extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */

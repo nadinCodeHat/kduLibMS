@@ -1,10 +1,13 @@
 package kdu.library.management.system;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,8 +16,17 @@ import javax.swing.JOptionPane;
  */
 public class LoginFrm extends javax.swing.JFrame {
 
-    public LoginFrm(){
+    public LoginFrm() {
         initComponents();
+        loadFrameImage();
+    }
+
+    public void loadFrameImage() {
+        try {
+            setIconImage(ImageIO.read(new File("kdu_logo.png")));
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(LoginFrm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -101,13 +113,13 @@ public class LoginFrm extends javax.swing.JFrame {
                     rs = pst.executeQuery();
                     if (rs.next()) {
                         String name = rs.getString("name");
-                        if (rs.getString("email").equals(email) && rs.getString("role_name").equals("Admin")) {               
-                            JOptionPane.showMessageDialog(null, "Login Successful! Welcome "+name);
+                        if (rs.getString("email").equals(email) && rs.getString("role_name").equals("Admin")) {
+                            JOptionPane.showMessageDialog(null, "Login Successful! Welcome " + name);
                             AdminFrm adminFrm = new AdminFrm();
                             adminFrm.setVisible(true);
                             this.dispose();
                         } else {
-                            JOptionPane.showMessageDialog(null, "Login Successful! Welcome "+name);
+                            JOptionPane.showMessageDialog(null, "Login Successful! Welcome " + name);
                             LibrarianFrm libFrm = new LibrarianFrm();
                             libFrm.setVisible(true);
                             this.dispose();
@@ -124,25 +136,24 @@ public class LoginFrm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_loginBtnActionPerformed
 
-     //validate fields
+    //validate fields
     public boolean validateFields() {
         String email = emailTextField.getText();
         String password = String.valueOf(passwordTextField.getPassword());
 
         //check empty fields
-        if (email.trim().equals("")){
+        if (email.trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Please enter your email address.", "Empty Field", 2);
             return false;
         }
-        if(password.trim().equals("")){
+        if (password.trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Password cannot be empty!", "Empty Field", 2);
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -163,7 +174,7 @@ public class LoginFrm extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(LoginFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */
